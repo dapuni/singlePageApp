@@ -40,6 +40,7 @@
       </div>
       <div class="modal-body">
         <form action="/modules" id="form" class="form-horizontal" onsubmit="event.preventDefault();">
+            <p style="color:red" id="alert"> </p>
             <input type="hidden" name="id" id="id">
             <div class="form-group">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Module Name<span class="required">*</span>
@@ -76,6 +77,7 @@
       $('#id').val('');
       $('#module').val('');
       $('#parent').val(0);
+      $('#alert').text('');
     });
 
     $('#submitForm').on('click',function(e){
@@ -89,11 +91,11 @@
       .then(function (response) {
         console.log(response);
         if (response.data.code == 422) {
-          alert(response.data.errors.module);
+          $('#alert').text(response.data.errors.module);
         } else {
           $('#myModal').modal('toggle');
+          setTimeout(function(){ refreshPage(); }, 500);
         }
-        setTimeout(function(){ refreshPage(); }, 500);
       })
       .catch(function (error) {
         console.log(error);

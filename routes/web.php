@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Roles
 	Route::get('/roles','RolesController@index');
+	Route::get('/roles/{id}','RolesController@edit');
+	Route::post('roles','RolesController@save');
+	Route::delete('/roles/{id}','RolesController@delete');
 
 	//Modules
 	Route::get('/modules','ModulesController@index');
