@@ -5,6 +5,7 @@
           <tr class="headings">
             <th>No ID</th>
             <th class="column-title">Modules Name</th>
+            <th class="column-title">Link</th>
             <th class="column-title">Parent ID</th>
             <th class="column-title" style="text-align:center">Action</th>
           </tr>
@@ -15,6 +16,7 @@
             <tr ">
               <td>{{ $module->id }}</td>
               <td>{{ $module->module }}</td>
+              <td>{{ $module->link }}</td>
               <td>{{ $module->parent }}</td>
               <td style="text-align:center">
                 <a href="/modules/{{ $module->id }}" class="btn btn-success btn-sm update">View</a>
@@ -49,6 +51,27 @@
                 <input type="text" name="module" id="module" required="required" class="form-control col-md-7 col-xs-12">
               </div>
             </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Module Link<span class="required">*</span>
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <input type="text" name="link" id="link" class="form-control col-md-7 col-xs-12">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Order<span class="required">*</span>
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <select class="form-control col-md-7 col-xs-12" name="ordered" id="ordered">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            </div>
             
             <div class="form-group">
               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Parent</span>
@@ -76,7 +99,9 @@
       e.preventDefault();
       $('#id').val('');
       $('#module').val('');
+      $('#link').val('');
       $('#parent').val(0);
+      $('#ordered').val(1);
       $('#alert').text('');
     });
 
@@ -86,7 +111,9 @@
         _token : '{{ csrf_token() }}',
         id : $('#id').val(),
         module : $('#module').val(),
-        parent : $('#parent').val() 
+        link : $('#link').val(),
+        parent : $('#parent').val(),
+        ordered : $('#ordered').val(),
       })
       .then(function (response) {
         console.log(response);
@@ -123,7 +150,9 @@
           console.log(response);
           $('#id').val(response.data.id);
           $('#module').val(response.data.module);
+          $('#link').val(response.data.link);
           $('#parent').val(response.data.parent);
+          $('#ordered').val(response.data.ordered);
         })
         .catch(function (error) {
           console.log(error);

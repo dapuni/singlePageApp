@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role_id'
     ];
 
     /**
@@ -26,4 +26,27 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function insertData($request) {
+        $module = new User();
+        $module->name = $request->input('name');
+        $module->email = $request->input('email');
+        $module->password = bcrypt($request->input('password'));  
+        $module->role_id = $request->input('role');
+        $module->save();
+    }
+
+    public static function updateData($request) {
+        $module = User::find($request->input('id'));
+        $module->name = $request->input('name');
+        $module->email = $request->input('email');
+        $module->password = bcrypt($request->input('password'));  
+        $module->role_id = $request->input('role');
+        $module->save();
+    }
+
+    public static function deleteData($id) {
+        $module = User::find($id);
+        $module->delete();
+    }
 }

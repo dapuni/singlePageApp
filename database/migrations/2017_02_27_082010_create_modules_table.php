@@ -17,6 +17,8 @@ class CreateModulesTable extends Migration
             $table->increments('id');
             $table->string('module');
             $table->integer('parent')->default(0);
+            $table->string('link')->default('/');
+            $table->integer('ordered')->default(0);
             $table->timestamps();
         });
     }

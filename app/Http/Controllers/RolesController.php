@@ -12,7 +12,7 @@ class RolesController extends Controller
     public function index()
     {
     	
-    	$data['modules'] = modules::All();
+    	$data['modules'] = modules::orderby('ordered','ASC')->get();
     	$data['roles'] = roles::paginate(5);
     	return view('roles.roles',$data);
     }

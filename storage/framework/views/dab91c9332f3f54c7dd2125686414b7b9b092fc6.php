@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SINGE PAGE APP</title>
+    <title>SINGLE PAGE APP</title>
 
     <!-- Styles -->
     <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
@@ -22,7 +22,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="/" class="site_title"><i class="fa fa-anchor"></i> <span>Singe Page App</span></a>
+              <a href="/" class="site_title"><i class="fa fa-anchor"></i> <span>Singel Page App</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -52,13 +52,20 @@
                       <li><a href="/dashboard" class="menu" oncontextmenu="return false;">Dashboard</a></li>
                     </ul>
                   </li>
-                  <li>
-                    <a><i class="fa fa-bars"></i> Setup <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="/roles" class="menu" oncontextmenu="return false;">Roles</a></li>
-                      <li><a href="/modules" class="menu" oncontextmenu="return false;">Modules</a></li>
-                    </ul>
-                  </li>
+                  <?php $__currentLoopData = $lists; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $list): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($list->parent == 0): ?>
+                      <li>
+                        <a><i class="fa fa-plus-square-o"></i> <?php echo e($list->module); ?> <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <?php $__currentLoopData = $lists; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $childlist): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <?php if($childlist->parent  == $list->id): ?>
+                                <li><a href="<?php echo e($childlist->link); ?>" class="menu" oncontextmenu="return false;"><?php echo e($childlist->module); ?></a></li>
+                              <?php endif; ?>
+                          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                      </li>
+                    <?php endif; ?>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
               </div>
             </div>
@@ -77,7 +84,8 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="<?php echo e(asset('assets/img.jpg')); ?>" alt="">John Doe
+                    <img src="<?php echo e(asset('assets/img.jpg')); ?>" alt=""><?php echo e(Auth::user()->name); ?>
+
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">

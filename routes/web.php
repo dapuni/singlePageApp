@@ -1,5 +1,5 @@
 <?php
-
+use App\roles;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,28 +12,38 @@
 */
 
 // Authentication Routes...
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/login', 'Auth\LoginController@login');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
-    	return view('layouts.template');
+    	$roles = roles::find(Auth::user()->role_id);
+    	$data['lists'] = DB::table('modules')->whereIn('id',explode(',',$roles->module))->orderby('ordered','ASC')->get();
+    	return view('layouts.template',$data);
 	});
 
 	Route::get('/dashboard','DashboardController@index');
 	Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-	//Roles
-	Route::get('/roles','RolesController@index');
-	Route::get('/roles/{id}','RolesController@edit');
-	Route::post('roles','RolesController@save');
-	Route::delete('/roles/{id}','RolesController@delete');
+	Route::group(['middleware' => 'module'], function () {
+		//Users
+		Route::get('/users','UsersController@index');
+		Route::get('/users/{id}','UsersController@edit');
+		Route::post('/users','UsersController@save');
+		Route::delete('/users/{id}','UsersController@delete');
 
-	//Modules
-	Route::get('/modules','ModulesController@index');
-	Route::get('/modules/{id}','ModulesController@edit');
-	Route::post('/modules/','ModulesController@save');
-	Route::delete('/modules/{id}','ModulesController@delete');
+		//Roles
+		Route::get('/roles','RolesController@index');
+		Route::get('/roles/{id}','RolesController@edit');
+		Route::post('/roles','RolesController@save');
+		Route::delete('/roles/{id}','RolesController@delete');
+
+		//Modules
+		Route::get('/modules','ModulesController@index');
+		Route::get('/modules/{id}','ModulesController@edit');
+		Route::post('/modules/','ModulesController@save');
+		Route::delete('/modules/{id}','ModulesController@delete');
+	});
 });
 
 
